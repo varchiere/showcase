@@ -89,7 +89,7 @@
         line-height: 1.6;
         font-style: italic;
         background: rgba(255, 255, 255, 0.05);
-        border-left: 4px solid #ff77e9;
+        /* border-left: 4px solid #ff77e9; */
         padding: 15px 20px;
         border-radius: 8px;
         backdrop-filter: blur(4px);
@@ -180,11 +180,11 @@
     <nav class="w-full fixed top-0 z-50 text-white py-4 mx-auto px-4 flex flex-col items-center pt-2 bg-opacity-100">
         <h1 class="text-2xl font-bold text-pink-400 absolute left-1/2 transform -translate-x-1/2">Lavatia Laflarld</h1>
         <button class="mute-btn text-sm px-3 py-1 absolute right-4" onclick="toggleMute()" id="muteBtn" onclick="toggleMute()" id="muteBtn">🔊</button>
-        <!-- <div class="mt-2 flex gap-4 pt-6">
-            <a href="index.html" class="text-white text-sm hover:underline">Home</a>
-            <a href="about.html" class="text-white text-sm hover:underline">About</a>
-            <a href="contact.html" class="text-white text-sm hover:underline">Contact</a>
-        </div>     -->
+        <div class="mt-2 flex gap-4 pt-6">
+            <a href="index.html" class="text-white text-sm hover:underline">Model</a>
+            <a href="https://lavatialaflarld.carrd.co/#two" class="text-white text-sm hover:underline">Character Sheets</a>
+            <!-- <a href="contact.html" class="text-white text-sm hover:underline">Contact</a> -->
+        </div>    
     </nav>
 
     <div class="swiper mySwiper z-10 w-full h-full">
@@ -263,100 +263,86 @@
       music.muted = !music.muted;
       muteBtn.textContent = music.muted ? '🔇' : '🔊';
     }
-  const canvas = document.getElementById('starCanvas');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
-  let mouse = { x: null, y: null };
+  const canvas = document.getElementById("starCanvas");
+  const ctx = canvas.getContext("2d");
+  let w, h;
 
-  function drawStar(cx, cy, spikes, outerRadius, innerRadius, alpha, glow = false) {
-    let rot = Math.PI / 2 * 3;
-    let x = cx;
-    let y = cy;
-    let step = Math.PI / spikes;
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resize);
+  resize();
 
+  const stars = [];
+  for (let i = 0; i < 80; i++) {
+    stars.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      size: Math.random() * 2 + 1,
+      speed: Math.random() * 0.2 + 0.05,
+      opacity: 0,
+      blinkSpeed: Math.random() * 0.02 + 0.005,
+      direction: 1
+    });
+  }
+
+  function drawStar(x, y, radius, points, inset, opacity) {
+    ctx.save();
     ctx.beginPath();
-    ctx.moveTo(cx, cy - outerRadius);
-    for (let i = 0; i < spikes; i++) {
-      x = cx + Math.cos(rot) * outerRadius;
-      y = cy + Math.sin(rot) * outerRadius;
-      ctx.lineTo(x, y);
-      rot += step;
-
-      x = cx + Math.cos(rot) * innerRadius;
-      y = cy + Math.sin(rot) * innerRadius;
-      ctx.lineTo(x, y);
-      rot += step;
+    ctx.translate(x, y);
+    ctx.moveTo(0, 0 - radius);
+    for (let i = 0; i < points; i++) {
+      ctx.rotate(Math.PI / points);
+      ctx.lineTo(0, 0 - (radius * inset));
+      ctx.rotate(Math.PI / points);
+      ctx.lineTo(0, 0 - radius);
     }
-    ctx.lineTo(cx, cy - outerRadius);
     ctx.closePath();
-
-    ctx.globalAlpha = alpha;
-
-    if (glow) {
-      ctx.shadowColor = 'white';
-      ctx.shadowBlur = 10;
-    } else {
-      ctx.shadowBlur = 0;
-    }
-
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = 'white';
     ctx.fill();
-    ctx.globalAlpha = 1;
+    ctx.restore();
   }
 
-  function initStars() {
-    const total = 120;
-    stars = [];
-    for (let i = 0; i < total; i++) {
-      stars.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        baseOuter: Math.random() * 2 + 1.5,
-        baseInner: Math.random() * 1 + 0.5,
-        alpha: Math.random(),
-        delta: Math.random() * 0.005 + 0.005 // pelan
-      });
-    }
-  }
-
-  function animateStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  function drawStars() {
+    ctx.clearRect(0, 0, w, h);
 
     for (let star of stars) {
-      const dist = Math.hypot(mouse.x - star.x, mouse.y - star.y);
-      const isHover = dist < 50;
+      drawStar(star.x, star.y, star.size, 5, 0.5, star.opacity);
+    }
+  }
 
-      const outerRadius = isHover ? star.baseOuter + 2 : star.baseOuter;
-      const innerRadius = isHover ? star.baseInner + 1 : star.baseInner;
-      const alpha = isHover ? 1 : star.alpha;
+  function updateStars() {
+    for (let star of stars) {
+      // Blink opacity manually
+      star.opacity += star.blinkSpeed * star.direction;
+      if (star.opacity >= 1) {
+        star.opacity = 1;
+        star.direction = -1;
+      }
+      if (star.opacity <= 0) {
+        star.opacity = 0;
+        star.direction = 1;
+      }
 
-      drawStar(star.x, star.y, 5, outerRadius, innerRadius, alpha, isHover);
-
-      if (!isHover) {
-        star.alpha += star.delta;
-        if (star.alpha <= 0.2 || star.alpha >= 0.9) {
-          star.delta = -star.delta;
-        }
+      // Falling animation
+      star.y += star.speed;
+      if (star.y > h) {
+        star.y = 0;
+        star.x = Math.random() * w;
       }
     }
-
-    requestAnimationFrame(animateStars);
   }
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    initStars();
+  function animate() {
+    drawStars();
+    updateStars();
+    requestAnimationFrame(animate);
   }
 
-  window.addEventListener('mousemove', e => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
-
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-  animateStars();
+  animate();
   
   </script>
 </body>
