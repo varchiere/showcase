@@ -15,6 +15,16 @@
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
     }
+    
+    h1 {
+        font-size: clamp(1.5rem, 3vw, 2rem); /* Lebih kecil dan responsif */
+        font-weight: bold;
+        color: #ff77e9;
+        text-shadow: 0 0 5px #ff77e9, 0 0 10px #aa00aa;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
     #starCanvas {
         position: fixed;
         top: 0;
@@ -79,7 +89,7 @@
         line-height: 1.6;
         font-style: italic;
         background: rgba(255, 255, 255, 0.05);
-        /* border-left: 4px solid #ff77e9; */
+        border-left: 4px solid #ff77e9;
         padding: 15px 20px;
         border-radius: 8px;
         backdrop-filter: blur(4px);
@@ -142,6 +152,8 @@
         0% {opacity: 0; transform: translateY(20px);}
         100% {opacity: 1; transform: translateY(0);}
     }
+
+
   </style>
 </head>
 <body class="bg-black text-white">
@@ -156,10 +168,10 @@
 
   <section class="w-full h-full flex flex-col items-center justify-center">
     <!-- Navbar -->
-    <nav class="w-full fixed top-0 z-50 bg-black text-white py-4 mx-auto px-4 flex flex-col items-center pt-5 bg-opacity-100">
-        <h1 class="text-2xl font-bold text-pink-400 absolute left-1/2 transform -translate-x-1/2">VTuber Showcase</h1>
-        <button class="mute-btn text-sm px-3 py-1 absolute right-4" onclick="toggleMute()" id="muteBtn" onclick="toggleMute()" id="muteBtn">🔊 Mute</button>
-        <div class="mt-2 flex gap-4 pt-10">
+    <nav class="w-full fixed top-0 z-50 text-white py-4 mx-auto px-4 flex flex-col items-center pt-2 bg-opacity-100">
+        <h1 class="text-2xl font-bold text-pink-400 absolute left-1/2 transform -translate-x-1/2">Lavatia Laflarld</h1>
+        <button class="mute-btn text-sm px-3 py-1 absolute right-4" onclick="toggleMute()" id="muteBtn" onclick="toggleMute()" id="muteBtn">🔊</button>
+        <div class="mt-2 flex gap-4 pt-6">
             <a href="index.html" class="text-white text-sm hover:underline">Home</a>
             <a href="about.html" class="text-white text-sm hover:underline">About</a>
             <a href="#contact" class="text-white text-sm hover:underline">Contact</a>
@@ -180,7 +192,7 @@
         </div>
         <div class="swiper-slide">
           <img src="models/model3.png" alt="Model 3">
-          <h2 class="text-3xl font-bold mt-6 text-pink-400">Model 2.0 Male Version (Kevin)</h2>
+          <h2 class="text-3xl font-bold mt-6 text-pink-400">Model 2.0 (Kevin)</h2>
           <p class="model-description">Male Version of 2.0.</p>
         </div>
         <div class="swiper-slide">
@@ -240,7 +252,7 @@
 
     function toggleMute() {
       music.muted = !music.muted;
-      muteBtn.textContent = music.muted ? '🔇 Unmute' : '🔊 Mute';
+      muteBtn.textContent = music.muted ? '🔇' : '🔊';
     }
     const canvas = document.getElementById('starCanvas');
   const ctx = canvas.getContext('2d');
