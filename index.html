@@ -65,6 +65,26 @@
         opacity: 1;
       }
     }
+    
+    .model-container img {
+    max-height: calc(100vh - 200px); /* 200px untuk menghindari overlap navbar */
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    }
+
+    .model-container {
+    padding-top: 20px;
+    padding-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    }
+
+
     .model {
         text-align: center;
         margin-top: 50px;
@@ -186,7 +206,7 @@
             <!-- <a href="contact.html" class="text-white text-sm hover:underline">Contact</a> -->
         </div>    
     </nav>
-
+    
     <div class="swiper mySwiper z-10 w-full h-full">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
