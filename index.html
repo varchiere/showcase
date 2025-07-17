@@ -125,9 +125,14 @@
 
   <section class="w-full h-full flex flex-col items-center justify-center">
     <!-- Navbar -->
-    <nav class="w-full px-4 py-3 bg-transparent fixed top-0 z-50 flex flex-col items-center justify-center pt-5">
-    <h1 class="text-xl sm:text-2xl font-bold text-pink-400 text-center">VTuber Showcase</h1>
-    <button class="mute-btn text-sm mt-2 px-4 py-1" onclick="toggleMute()" id="muteBtn" onclick="toggleMute()" id="muteBtn">🔊 Mute</button>
+    <nav class="container mx-auto px-4 flex flex-col items-center pt-5">
+        <h1 class="text-2xl font-bold text-pink-400 absolute left-1/2 transform -translate-x-1/2">VTuber Showcase</h1>
+        <button class="mute-btn text-sm px-3 py-1 absolute right-4" onclick="toggleMute()" id="muteBtn" onclick="toggleMute()" id="muteBtn">🔊 Mute</button>
+        <div class="mt-2 flex gap-4 pt-10">
+            <a href="index.html" class="text-white text-sm hover:underline">Home</a>
+            <a href="about.html" class="text-white text-sm hover:underline">About</a>
+            <a href="#contact" class="text-white text-sm hover:underline">Contact</a>
+        </div>    
     </nav>
 
     <div class="swiper mySwiper z-10 w-full h-full">
@@ -162,6 +167,13 @@
       <div class="swiper-pagination"></div>
     </div>
   </section>
+
+    <section id="about" class="min-h-screen bg-black bg-opacity-80 flex flex-col items-center justify-center p-8">
+        <h2 class="text-3xl text-pink-300 mb-4 font-bold">About</h2>
+        <p class="max-w-2xl text-center text-white text-lg">
+        This VTuber showcase features a collection of models representing unique talents and creativity. Each slide highlights a different character created and designed by our beloved VTuber.
+        </p>
+    </section>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script>
